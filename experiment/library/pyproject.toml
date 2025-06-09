@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "thesis-library"
+version = "0.0.1"
+description = "Auxiliary functions for training and evaluating models in my thesis"
+authors = ["Philipp Beneder"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+anomalib = "^2.0.0"
+matplotlib = "^3.10.0"
+numpy = "==2.2.6"
+pandas = "==2.3.0"
+torchvision = "^0.22.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
