@@ -917,14 +917,14 @@ files = [
 
 [[package]]
 name = "comet-ml"
-version = "3.49.10"
+version = "3.49.11"
 description = "Supercharging Machine Learning"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "comet_ml-3.49.10-py3-none-any.whl", hash = "sha256:8467af1bcffd7076e220ea283ff6e95da4b91b23602d5db53b70be6d3cf33fe5"},
-    {file = "comet_ml-3.49.10.tar.gz", hash = "sha256:fd4e2b71bf0d2a95e1cd2c0bdfbd6c57a3b02db273f60a4ab4590a00df09f5d8"},
+    {file = "comet_ml-3.49.11-py3-none-any.whl", hash = "sha256:686d1802cdb74620a19b7c8aade641b1afc5ecc4820dee772a733fd49e1fbbc1"},
+    {file = "comet_ml-3.49.11.tar.gz", hash = "sha256:3229c780158f8e3490ccce87f832f408945b650733d6504a3053375bc4e38f40"},
 ]
 
 [package.dependencies]
@@ -1781,14 +1781,14 @@ urllib3 = ["packaging", "urllib3"]
 
 [[package]]
 name = "gradio"
-version = "5.33.1"
+version = "5.33.2"
 description = "Python library for easily interacting with trained machine learning models"
 category = "main"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "gradio-5.33.1-py3-none-any.whl", hash = "sha256:c4329b04280d62041fbf0113e94fb5c4d20e0555ce1ac69174bf98225350159b"},
-    {file = "gradio-5.33.1.tar.gz", hash = "sha256:f74c737aa92fc02b4d7dca7e50ee13ddce548aa16c9fcbe907ceabf93722f94d"},
+    {file = "gradio-5.33.2-py3-none-any.whl", hash = "sha256:34cf9c5b5c18fed7dab9c976f30b3f7f3378a0ef9d4e236e1c5dcc4bd6a07f07"},
+    {file = "gradio-5.33.2.tar.gz", hash = "sha256:6c36c878dfb1f02a9f002dfd86ef83d26e0f11e47c6fe9cc260d8d42f390ca73"},
 ]
 
 [package.dependencies]
@@ -6333,14 +6333,14 @@ files = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.29.1"
+version = "2.30.0"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "sentry_sdk-2.29.1-py2.py3-none-any.whl", hash = "sha256:90862fe0616ded4572da6c9dadb363121a1ae49a49e21c418f0634e9d10b4c19"},
-    {file = "sentry_sdk-2.29.1.tar.gz", hash = "sha256:8d4a0206b95fa5fe85e5e7517ed662e3888374bdc342c00e435e10e6d831aa6d"},
+    {file = "sentry_sdk-2.30.0-py2.py3-none-any.whl", hash = "sha256:59391db1550662f746ea09b483806a631c3ae38d6340804a1a4c0605044f6877"},
+    {file = "sentry_sdk-2.30.0.tar.gz", hash = "sha256:436369b02afef7430efb10300a344fb61a11fe6db41c2b11f41ee037d2dd7f45"},
 ]
 
 [package.dependencies]
@@ -6954,14 +6954,14 @@ files = [
 
 [[package]]
 name = "tifffile"
-version = "2025.5.10"
+version = "2025.1.10"
 description = "Read and write TIFF files"
 category = "main"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "tifffile-2025.5.10-py3-none-any.whl", hash = "sha256:e37147123c0542d67bc37ba5cdd67e12ea6fbe6e86c52bee037a9eb6a064e5ad"},
-    {file = "tifffile-2025.5.10.tar.gz", hash = "sha256:018335d34283aa3fd8c263bae5c3c2b661ebc45548fde31504016fcae7bf1103"},
+    {file = "tifffile-2025.1.10-py3-none-any.whl", hash = "sha256:ed24cf4c99fb13b4f5fb29f8a0d5605e60558c950bccbdca2a6470732a27cfb3"},
+    {file = "tifffile-2025.1.10.tar.gz", hash = "sha256:baaf0a3b87bf7ec375fa1537503353f70497eabe1bdde590f2e41cc0346e612f"},
 ]
 
 [package.dependencies]
@@ -7998,4 +7998,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1753d8ace3c62272348e93114203e11d7382e99db930dff9fc76b51cf6d8c5e0"
+content-hash = "ac06a5f271331b13293db4fe5d25e484cd8e3f8cbefd0a621cd71404fc85e5de"

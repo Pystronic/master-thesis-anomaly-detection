@@ -2,12 +2,19 @@
 name = "thesis_library"
 version = "0.0.1"
 description = "Auxiliary functions for training and evaluating models in my thesis"
-authors = ["Philipp Beneder"]
+authors = ["Phlipp Beneder"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 anomalib = {extras = ["full"], version = "^2.0.0"}
 torchvision = "^0.22.1"
+pandas = "2.2.3"
+lightning = "^2.5.1.post0"
+opencv-python = "^4.11.0.86"
+kornia = "^0.8.1"
+tifffile = "v2025.1.10"
+matplotlib = "^3.10.3"
+scikit-learn = "^1.7.0"
 
 [build-system]
 requires = ["poetry-core"]
