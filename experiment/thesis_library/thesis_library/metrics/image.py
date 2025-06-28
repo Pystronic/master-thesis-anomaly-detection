@@ -1,28 +1,28 @@
 from anomalib.metrics import AnomalibMetric, AUROC, F1Score
-from torchmetrics.classification import BinaryStatScores, BinaryPrecision, BinaryRecall, BinaryAUROC
+from torch import Tensor
+from torchmetrics.classification import BinaryAveragePrecision
 
-from thesis_library.metrics.AurocLimitedFPR import AUROCLimitFPR
 
+class _AP(BinaryAveragePrecision):
+    """
+    Fix format in which the update method is called.
+    """
+    def update(self, preds: Tensor, target: Tensor) -> None:
+        super().update(preds.flatten(), target.flatten())
 
-# TP, FP, TN, FN
-class StatScores(AnomalibMetric, BinaryStatScores):
+class AP(AnomalibMetric, _AP):
     pass
 
 # Metrics used on the image level:
 #   TP, FP, TN, FN
 #   F1-Score
 #   AUROC
-#   AUROC>30%
-
 def get_metrics() -> list[AnomalibMetric]:
+    num_thresholds = 1000
     prefix = "IMG_"
-    stat_score = StatScores(["pred_label", "gt_label"], prefix)
-    f1_score = F1Score(["pred_label", "gt_label"], prefix)
-    auroc = AUROC(["pred_score", "gt_label"], prefix)
-    auroc_30 = AUROCLimitFPR(["pred_score", "gt_label"], prefix + '30%_', False, min_fpr=0.3)
-    return [stat_score, f1_score, auroc, auroc_30]
 
-# Calculate TPR, FPR, Precision, Recall from StatScores
-def calculate_rates() -> None:
-    # ToDo:
-    pass
+    ap = AP(["pred_score", "gt_label"], prefix, thresholds=num_thresholds)
+    f1_score = F1Score(["pred_label", "gt_label"], prefix)
+    auroc = AUROC(["pred_score", "gt_label"], prefix, thresholds=num_thresholds)
+
+    return [ap, f1_score, auroc]
