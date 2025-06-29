@@ -1,7 +1,7 @@
 import torch
 from anomalib.data import ImageBatch
 
-from thesis_library.miad_dataset import MIAD_CATEGORIES
+from thesis_library.data.miad_dataset import MIAD_CATEGORIES
 from thesis_library.metrics import image, pixel
 
 print(MIAD_CATEGORIES)
