@@ -3,13 +3,19 @@ from typing import Any
 import numpy as np
 import torch
 from anomalib.metrics import AnomalibMetric, AUROC, AUPRO, F1Max
-from torchmetrics.classification import BinaryAveragePrecision
+from torchmetrics.classification import BinaryAveragePrecision, BinaryF1Score, BinaryAccuracy
 
 from thesis_library.metrics.IoU import mIoU, mIoUMax
-from thesis_library.metrics.LimitedMetrics import F1, Acc
+from thesis_library.metrics.LimitedMetrics import _LimitDuringUpdate
 
 
 class AP(AnomalibMetric, BinaryAveragePrecision):
+    pass
+
+class F1(AnomalibMetric, _LimitDuringUpdate, BinaryF1Score):
+    pass
+
+class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
     pass
 
 

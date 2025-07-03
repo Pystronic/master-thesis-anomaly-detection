@@ -5,6 +5,7 @@ from torchmetrics.classification import BinaryF1Score, BinaryAccuracy
 class _LimitDuringUpdate:
     """
     Implementation to limit metrics during the update call.
+    Workaround for Metrics which do not accept fixed thresholds.
     """
     def __init__(
             self,
@@ -25,10 +26,3 @@ class _LimitDuringUpdate:
 
         filtered_target = target[filtered_preds_i]
         super().update(filtered_preds, filtered_target)
-
-
-class F1(AnomalibMetric, _LimitDuringUpdate, BinaryF1Score):
-    pass
-
-class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
-    pass

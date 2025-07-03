@@ -18,7 +18,7 @@ class AP(AnomalibMetric, _AP):
 #   F1-Score
 #   AUROC
 def get_metrics() -> list[AnomalibMetric]:
-    num_thresholds = 1000
+    num_thresholds = 100
     prefix = "IMG_"
 
     ap = AP(["pred_score", "gt_label"], prefix, thresholds=num_thresholds)
