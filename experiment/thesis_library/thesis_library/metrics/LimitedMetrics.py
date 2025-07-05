@@ -1,6 +1,4 @@
-from anomalib.metrics import AnomalibMetric
 from torch import Tensor
-from torchmetrics.classification import BinaryF1Score, BinaryAccuracy
 
 class _LimitDuringUpdate:
     """
@@ -22,7 +20,6 @@ class _LimitDuringUpdate:
         filtered_preds = preds[filtered_preds_i]
         if filtered_preds.numel() == 0:
             return
-
 
         filtered_target = target[filtered_preds_i]
         super().update(filtered_preds, filtered_target)

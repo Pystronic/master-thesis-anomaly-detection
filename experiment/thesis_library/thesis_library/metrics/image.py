@@ -13,6 +13,7 @@ class _AP(BinaryAveragePrecision):
 class AP(AnomalibMetric, _AP):
     pass
 
+
 # Metrics used on the image level:
 #   TP, FP, TN, FN
 #   F1-Score
