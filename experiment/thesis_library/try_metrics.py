@@ -26,19 +26,13 @@ for metric in image_metrics:
 # Testing image level metrics [0 = normal, 1 = anomaly]
 image_batch = ImageBatch(
     image=torch.rand(1, 3, 224, 224),
-    pred_score=torch.tensor([[
-        [0.1, 0.1, 0.0, 0.0],
-        [0.1, 0.2, 0.7, 0.0],
-        [0.0, 0.8, 0.9, 0.0],
+    anomaly_map=torch.tensor([[
+        [0.0, 0.0, 0.0, 0.0],
+        [0.0, 0.9, 1.0, 0.0],
+        [0.0, 1.0, 1.0, 0.0],
         [0.0, 0.0, 0.0, 0.0],
     ]]),
     gt_mask=torch.tensor([[
-        [0.0, 0.0, 0.0, 0.0],
-        [0.0, 1.0, 1.0, 0.0],
-        [0.0, 1.0, 1.0, 0.0],
-        [0.0, 0.0, 0.0, 0.0],
-    ]]).bool(),
-    anomaly_map=torch.tensor([[
         [0.0, 0.0, 0.0, 0.0],
         [0.0, 1.0, 1.0, 0.0],
         [0.0, 1.0, 1.0, 0.0],

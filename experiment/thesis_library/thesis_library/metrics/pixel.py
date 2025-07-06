@@ -2,9 +2,10 @@ from typing import Any
 
 import numpy as np
 import torch
-from anomalib.metrics import AnomalibMetric, AUROC, AUPRO, F1Max
+from anomalib.metrics import AnomalibMetric, AUROC, F1Max
 from torchmetrics.classification import BinaryAveragePrecision, BinaryF1Score, BinaryAccuracy
 
+from thesis_library.metrics.EfficientPRO import AUPRO
 from thesis_library.metrics.IoU import mIoU, mIoUMax
 from thesis_library.metrics.LimitedMetrics import _LimitDuringUpdate
 
@@ -39,7 +40,7 @@ def get_metrics() -> list[AnomalibMetric]:
     prefix = "PX_"
     auroc = AUROC(["anomaly_map", "gt_mask"], prefix, thresholds=num_thresholds)
     ap = AP(["anomaly_map", "gt_mask"], prefix, thresholds=num_thresholds)
-    pro = AUPRO(["anomaly_map", "gt_mask"], prefix, num_thresholds=num_thresholds)
+    pro = AUPRO(["anomaly_map", "gt_mask"], prefix, thresholds=num_thresholds)
     f1max = F1Max(["anomaly_map", "gt_mask"], prefix)
     miou = mIoU(["anomaly_map", "gt_mask"], prefix, thresholds=num_thresholds)
 
