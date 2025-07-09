@@ -4,7 +4,7 @@ from warnings import warn
 from scipy.ndimage import label
 from anomalib.data import ImageBatch
 from anomalib.metrics import AnomalibMetric, AUPRO as AnomalibAUPRO
-from pyaupro import PerRegionOverlap, auc_compute, generate_random_data
+from pyaupro import PerRegionOverlap, generate_random_data
 from pyaupro._implementation import _get_structure
 from torch import Tensor
 
@@ -43,7 +43,7 @@ class _EfficientAUPRO(PerRegionOverlap):
     def compute(self) -> torch.Tensor:
         fpr, pro = super().compute()
 
-        return auc_compute(fpr, pro, reorder=True, descending=True, limit=self.fpr_limit)
+        return fixed_auc_compute(fpr, pro, reorder=True, descending=True, limit=self.fpr_limit)
 
 
 def _fixed_per_region_overlap_update(
@@ -99,7 +99,78 @@ def _fixed_per_region_overlap_update(
 
     return false_positive_rate / total_negatives, per_region_overlap
 
+def fixed_auc_compute(
+    x: Tensor,
+    y: Tensor,
+    limit: float = 1.0,
+    *,
+    descending: bool = False,
+    reorder: bool = False,
+    check: bool = True,
+    return_curve: bool = False,
+) -> Tensor | tuple[Tensor, Tensor, Tensor]:
+    """Compute area under the curve using the trapezoidal rule.
 
+    Args:
+        x:
+            Ascending (or descending if ``descending=True``) sorted vector if,
+            otherwise ``reorder`` must be used.
+        y:
+            Vector of the same size as ``x``.
+        limit:
+            Integration limit chosen for ``x`` such that only the values until
+            the limit are used for computation.
+        descending:
+            Input vector ``x`` is descending or ``reorder`` sorts descending.
+        check:
+            Check if the given vector is monotonically increasing or decreasing.
+        return_curve:
+            Return the final tensors used to compute the area under the curve.
+
+    Example:
+        >>> import torch
+        >>> x = torch.tensor([1, 2, 3, 4])
+        >>> y = torch.tensor([1, 2, 3, 4])
+        >>> _auc_compute(x, y)
+        tensor(7.5000)
+
+    """
+    assert limit > 0, "The `limit` parameter must be > 0."
+
+    with torch.no_grad():
+        if reorder:
+            x, x_idx = torch.sort(x, descending=descending)
+            y = y[x_idx]
+
+        if check and not reorder:
+            dx = torch.diff(x)
+            if descending:
+                assert (dx <= 0).all(), "The `x` tensor is not descending."
+            else:
+                assert (dx >= 0).all(), "The `x` tensor is not ascending."
+
+        if limit != 1.0:
+            # searchsorted expects a monotonically increasing tensor, returning the first index that
+            # satisfies limit when side="left"
+            x_sorted = x.flip(dims=(0,)) if descending else x
+            limit_idx = torch.searchsorted(x_sorted, limit, side="left")
+            limit_idx = len(x) - limit_idx if descending else limit_idx
+            x = x[limit_idx:] if descending else x[:limit_idx]
+            y = y[limit_idx:] if descending else y[:limit_idx]
+
+        # ensure that the curve is always filled to the limit value, this is necessary if there are
+        # large gaps and no point lies close to the limit value, which would disturb the AUC computation
+        if x.max() < limit:
+            limit_value = y[0] if descending else y[-1]
+            # FIX: Tensor is created on the wrong device
+            xs, ys = [x, torch.tensor([limit], device=x.device)], [y, torch.tensor([limit_value], device=y.device)]
+            x = torch.cat(tuple(reversed(xs)) if descending else xs)
+            y = torch.cat(tuple(reversed(ys)) if descending else ys)
+
+        direction = -1.0 if descending else 1.0
+        auc_score = torch.trapz(y, x) * direction
+        auc_score = auc_score / limit
+        return (auc_score, x, y) if return_curve else auc_score
 
 
 class AUPRO(AnomalibMetric, _EfficientAUPRO):  # type: ignore[misc]
