@@ -27,7 +27,7 @@ class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
 #   F1-max
 #   mIoU
 
-# Threshold based metrcis
+# Threshold based metrics
 #   mF1-2-8
 #   mAcc-2-8
 #   mIoU-2-8
@@ -59,9 +59,6 @@ def get_metrics() -> list[AnomalibMetric]:
     ]
 
 def get_val_metrics() -> list[AnomalibMetric]:
-    num_thresholds = 100
-
-    # Attributes for pixel level metrics
     prefix = "PX_"
-    auroc = AUROC(["anomaly_map", "gt_mask"], prefix, thresholds=num_thresholds)
-    return [auroc]
+    f1max = F1Max(["anomaly_map", "gt_mask"], prefix)
+    return [f1max]
