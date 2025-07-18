@@ -16,7 +16,7 @@ class _LimitDuringUpdate:
         super().__init__(**kwargs)
 
     def update(self, preds: Tensor, target: Tensor) -> None:
-        filtered_preds_i = (preds >= self.score_l) <= self.score_h
+        filtered_preds_i = (preds >= self.score_l) | (preds <= self.score_h)
         filtered_preds = preds[filtered_preds_i]
         if filtered_preds.numel() == 0:
             return
