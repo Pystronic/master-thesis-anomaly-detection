@@ -2,7 +2,7 @@ from typing import Any
 
 import numpy as np
 import torch
-from anomalib.metrics import AnomalibMetric, AUROC, F1Max
+from anomalib.metrics import AnomalibMetric, AUROC, F1Max, F1Score
 from torchmetrics.classification import BinaryAveragePrecision, BinaryF1Score, BinaryAccuracy
 
 from thesis_library.metrics.EfficientPRO import AUPRO
@@ -59,6 +59,6 @@ def get_metrics() -> list[AnomalibMetric]:
     ]
 
 def get_val_metrics() -> list[AnomalibMetric]:
-    prefix = "PX_"
-    f1max = F1Max(["anomaly_map", "gt_mask"], prefix)
-    return [f1max]
+    px_f1max = F1Max(["anomaly_map", "gt_mask"], prefix="PX_")
+    img_f1_score = F1Score(["pred_label", "gt_label"], prefix="IMG_")
+    return [px_f1max, img_f1_score]
