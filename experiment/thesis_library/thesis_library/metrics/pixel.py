@@ -60,5 +60,5 @@ def get_metrics() -> list[AnomalibMetric]:
 
 def get_val_metrics() -> list[AnomalibMetric]:
     px_f1max = F1Max(["anomaly_map", "gt_mask"], prefix="PX_")
-    img_f1_score = F1Score(["pred_label", "gt_label"], prefix="IMG_")
-    return [px_f1max, img_f1_score]
+    img_auroc = AUROC(["pred_score", "gt_label"], prefix="IMG_", thresholds=100)
+    return [img_auroc, px_f1max]
