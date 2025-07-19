@@ -2,8 +2,9 @@ from typing import Any
 
 import numpy as np
 import torch
-from anomalib.metrics import AnomalibMetric, AUROC, F1Max, F1Score
-from torchmetrics.classification import BinaryAveragePrecision, BinaryF1Score, BinaryAccuracy
+from anomalib.metrics import AnomalibMetric, AUROC, F1Max
+from anomalib.metrics.f1_score import _F1Max
+from torchmetrics.classification import BinaryAveragePrecision, BinaryAccuracy
 
 from thesis_library.metrics.EfficientPRO import AUPRO
 from thesis_library.metrics.IoU import mIoU, mIoUMax
@@ -13,7 +14,7 @@ from thesis_library.metrics.LimitedMetrics import _LimitDuringUpdate
 class AP(AnomalibMetric, BinaryAveragePrecision):
     pass
 
-class F1(AnomalibMetric, _LimitDuringUpdate, BinaryF1Score):
+class F1Limited(AnomalibMetric, _LimitDuringUpdate, _F1Max):
     pass
 
 class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
@@ -48,7 +49,7 @@ def get_metrics() -> list[AnomalibMetric]:
     prefix = "PX_0.2_0.8_"
     thresholds = torch.arange(start=0.2, end=0.8 + np.finfo(float).eps, step=0.1)
 
-    f1_2_8 = F1(["anomaly_map", "gt_mask"], prefix, score_l=0.2, score_h=0.8)
+    f1_2_8 = F1Limited(["anomaly_map", "gt_mask"], prefix, score_l=0.2, score_h=0.8)
     acc_2_8 = Acc(["anomaly_map", "gt_mask"], prefix, score_l=0.2, score_h=0.8)
     miou_2_8 = mIoU(["anomaly_map", "gt_mask"], prefix, thresholds=thresholds)
     miou_max = mIoUMax(["anomaly_map", "gt_mask"], prefix="PX_", thresholds=10)
