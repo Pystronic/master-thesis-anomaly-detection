@@ -1,10 +1,8 @@
-from typing import Any
-
 import numpy as np
 import torch
 from anomalib.metrics import AnomalibMetric, AUROC, F1Max
 from anomalib.metrics.f1_score import _F1Max
-from torchmetrics.classification import BinaryAveragePrecision, BinaryAccuracy
+from torchmetrics.classification import BinaryAveragePrecision, BinaryAccuracy, BinaryF1Score
 
 from thesis_library.metrics.EfficientPRO import AUPRO
 from thesis_library.metrics.IoU import mIoU, mIoUMax
@@ -14,8 +12,17 @@ from thesis_library.metrics.LimitedMetrics import _LimitDuringUpdate
 class AP(AnomalibMetric, BinaryAveragePrecision):
     pass
 
+
+class F1(AnomalibMetric, _LimitDuringUpdate, BinaryF1Score):
+    """
+    Deprecated. Required to load old models which wrongly used this metric.
+    """
+    pass
+
+
 class F1Limited(AnomalibMetric, _LimitDuringUpdate, _F1Max):
     pass
+
 
 class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
     pass
@@ -58,6 +65,7 @@ def get_metrics() -> list[AnomalibMetric]:
         auroc, ap, pro, f1max, miou,
         f1_2_8, acc_2_8, miou_2_8, miou_max
     ]
+
 
 def get_val_metrics() -> list[AnomalibMetric]:
     px_f1max = F1Max(["anomaly_map", "gt_mask"], prefix="PX_")
