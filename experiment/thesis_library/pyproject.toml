@@ -1,32 +1,32 @@
-[tool.poetry]
+[project]
 name = "thesis_library"
 version = "0.0.1"
 description = "Auxiliary functions for training and evaluating models in my thesis"
-authors = ["Phlipp Beneder"]
+requires-python = ">=3.10"
+dependencies = [
+    "torchvision>=0.22.1",
+    "pandas>=2.2.2",
+    "lightning>=2.5.1.post0",
+    "opencv-python>=4.11.0.86",
+    "kornia>=0.8.1",
+    "tifffile>=v2025.1.10",
+    "matplotlib>=3.10.3",
+    "scikit-learn>=1.7.0",
+    "scikit-image>=0.25.2",
+    "openvino>=2025.2.0",
+    "timm>=1.0.15",
+    "einops>=0.8.1",
+    "freia>=0.2",
+    "dotenv>=0.9.9",
+    "open-clip-torch>=2.23",
+    "pyaupro>=0.1.10",
+    "anomalib[full]",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-anomalib = {extras = ["full"], version = "^2.0.0"}
-torchvision = "^0.22.1"
-pandas = "2.2.2"
-lightning = "^2.5.1.post0"
-opencv-python = "^4.11.0.86"
-kornia = "^0.8.1"
-tifffile = "v2025.1.10"
-matplotlib = "^3.10.3"
-scikit-learn = "^1.7.0"
-scikit-image = "^0.25.2"
-openvino = "^2025.2.0"
-timm = "^1.0.15"
-einops = "^0.8.1"
-freia = "^0.2"
-dotenv = "^0.9.9"
-open-clip-torch = "^2.23"
-pyaupro = "^0.1.10"
+[dependency-groups]
+dev = [
+    "pytest>=0.1.10"
+]
 
-[tool.poetry.dev-dependencies]
-pytest = "^8.4.1"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv.sources]
+anomalib = { git = "https://github.com/open-edge-platform/anomalib.git" }

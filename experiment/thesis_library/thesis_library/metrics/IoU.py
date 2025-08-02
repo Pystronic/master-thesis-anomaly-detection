@@ -3,8 +3,8 @@ from typing import Optional, Union
 
 import torch
 from anomalib.metrics import AnomalibMetric
-from anomalib.metrics.binning import thresholds_between_0_and_1, thresholds_between_min_and_max
-from anomalib.metrics.plotting_utils import plot_figure
+from anomalib.metrics.binning import thresholds_between_0_and_1
+from anomalib.metrics.utils import plot_figure
 from matplotlib.axis import Axis
 from matplotlib.figure import Figure
 from torch import Tensor
