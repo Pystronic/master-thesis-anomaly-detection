@@ -20,13 +20,10 @@ dependencies = [
     "dotenv>=0.9.9",
     "open-clip-torch>=2.23",
     "pyaupro>=0.1.10",
-    "anomalib[full]",
+    "anomalib[full]>=2.1.0",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=0.1.10"
 ]
-
-[tool.uv.sources]
-anomalib = { git = "https://github.com/open-edge-platform/anomalib.git" }
