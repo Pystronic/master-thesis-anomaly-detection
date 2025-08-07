@@ -158,6 +158,10 @@ def fixed_auc_compute(
             x = x[limit_idx:] if descending else x[:limit_idx]
             y = y[limit_idx:] if descending else y[:limit_idx]
 
+        if x.numel() == 0:
+            # Return empty result if no values are available
+            return (torch.tensor(0, device=x.device), torch.tensor(-1, device=x.device), torch.tensor(-1, device=x.device)) if return_curve else torch.tensor(0, device=x.device)
+
         # ensure that the curve is always filled to the limit value, this is necessary if there are
         # large gaps and no point lies close to the limit value, which would disturb the AUC computation
         if x.max() < limit:
