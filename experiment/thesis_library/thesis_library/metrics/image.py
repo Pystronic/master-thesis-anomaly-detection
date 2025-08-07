@@ -1,6 +1,8 @@
-from anomalib.metrics import AnomalibMetric, AUROC, F1Max, F1AdaptiveThreshold
+from anomalib.metrics import AnomalibMetric, AUROC
 from torch import Tensor
 from torchmetrics.classification import BinaryAveragePrecision
+
+from thesis_library.metrics.ThresholdedF1Max import F1Max
 
 
 class _AP(BinaryAveragePrecision):
@@ -23,7 +25,7 @@ def get_metrics() -> list[AnomalibMetric]:
     prefix = "IMG_"
 
     ap = AP(["pred_score", "gt_label"], prefix, thresholds=num_thresholds)
-    f1_score = F1Max(["pred_score", "gt_label"], prefix)
+    f1_score = F1Max(["pred_score", "gt_label"], prefix, thresholds=1000)
     auroc = AUROC(["pred_score", "gt_label"], prefix, thresholds=num_thresholds)
 
     return [ap, f1_score, auroc]
