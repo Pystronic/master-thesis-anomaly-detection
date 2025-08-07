@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 from anomalib.metrics import AnomalibMetric, AUROC
+from anomalib.metrics.f1_score import _F1Max
 from torchmetrics.classification import BinaryAveragePrecision, BinaryAccuracy, BinaryF1Score
 
 from thesis_library.metrics.EfficientPRO import AUPRO
@@ -8,15 +9,22 @@ from thesis_library.metrics.IoU import mIoU, mIoUMax
 from thesis_library.metrics.LimitedMetrics import _LimitDuringUpdate
 from thesis_library.metrics.ThresholdedF1Max import F1Max
 
-
-class AP(AnomalibMetric, BinaryAveragePrecision):
-    pass
-
-
+##### Deprecated #######
 class F1(AnomalibMetric, _LimitDuringUpdate, BinaryF1Score):
     """
     Deprecated. Required to load old models which wrongly used this metric.
     """
+    pass
+class F1Limited(AnomalibMetric, _LimitDuringUpdate, _F1Max):
+    """
+    Deprecated. Required to load old models which used this metric.
+    """
+    pass
+##########################
+
+
+
+class AP(AnomalibMetric, BinaryAveragePrecision):
     pass
 
 class Acc(AnomalibMetric, _LimitDuringUpdate, BinaryAccuracy):
