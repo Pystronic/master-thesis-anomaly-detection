@@ -7,7 +7,7 @@ from thesis_library.metrics.ThresholdedF1Max import F1Max
 
 class _AP(BinaryAveragePrecision):
     """
-    Fix format in which the update method is called.
+    Inputs need to be flattened to use with prediction scores and labels.
     """
     def update(self, preds: Tensor, target: Tensor) -> None:
         super().update(preds.flatten(), target.flatten())
