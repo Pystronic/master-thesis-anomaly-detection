@@ -1,3 +1,12 @@
+"""
+Implementation taken from https://github.com/davnn/pyaupro
+
+Custom Implementation fixes two bugs:
+- Tensors being intialized on the wrong device
+-
+"""
+
+
 import torch
 import time
 from warnings import warn
@@ -158,6 +167,7 @@ def fixed_auc_compute(
             x = x[limit_idx:] if descending else x[:limit_idx]
             y = y[limit_idx:] if descending else y[:limit_idx]
 
+        # FIX: x could be empty if values are filtered. This causes the code to fail if not handeld.
         if x.numel() == 0:
             # Return empty result if no values are available
             return (torch.tensor(0, device=x.device), torch.tensor(-1, device=x.device), torch.tensor(-1, device=x.device)) if return_curve else torch.tensor(0, device=x.device)
