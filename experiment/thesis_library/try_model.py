@@ -7,12 +7,10 @@ from anomalib.data import MVTecAD
 from anomalib.data.utils import ValSplitMode
 from anomalib.deploy import ExportType
 from anomalib.metrics import Evaluator
-from anomalib.models import Fastflow, Draem, Cfa, AnomalibModule, UniNet, Dinomaly
+from anomalib.models import Fastflow, Draem, Cfa, AnomalibModule, UniNet, Dinomaly, EfficientAd
 from anomalib.engine import Engine
-from lightning import Trainer, LightningModule
 from lightning.pytorch.loggers import CSVLogger
 from pandas import DataFrame
-
 
 from thesis_library.metrics import image, pixel
 from thesis_library.metrics.util import  calculate_AD_metrics
@@ -32,7 +30,7 @@ LOAD_MODEL_PATH = None # OUTPUT_PATH / "weights/torch/EfficientAd.pt"
 
 # Initialize the datamodule, model, and engine
 
-datamodule = MVTecAD(train_batch_size=32, val_split_mode=ValSplitMode.FROM_TEST, val_split_ratio=0.2)
+datamodule = MVTecAD(train_batch_size=1, eval_batch_size=1, val_split_mode=ValSplitMode.FROM_TEST, val_split_ratio=0.2)
 
 # Initialize metrics
 test_metrics = [
@@ -45,23 +43,23 @@ logger = CSVLogger(OUTPUT_PATH / "logs", name="run_log")
 
 
 # Note: Could work in theory
-def plotting_on_test_epoch_end(
-        self: Evaluator,
-        trainer: Trainer,
-        pl_module: LightningModule,
-) -> None:
-    """Compute and log test metrics."""
-    del trainer, pl_module  # Unused argument.
-    for metric in self.test_metrics:
-        self.log(metric.name, metric)
-        if getattr(metric, 'plot', None) is not None:
-            try:
-                fig, axis = metric.plot()
-                print(f'Plotting {metric.name}')
-                fig.show()
-            except Exception as e:
-                print(e)
-                pass
+# def plotting_on_test_epoch_end(
+#         self: Evaluator,
+#         trainer: Trainer,
+#         pl_module: LightningModule,
+# ) -> None:
+#     """Compute and log test metrics."""
+#     del trainer, pl_module  # Unused argument.
+#     for metric in self.test_metrics:
+#         self.log(metric.name, metric)
+#         if getattr(metric, 'plot', None) is not None:
+#             try:
+#                 fig, axis = metric.plot()
+#                 print(f'Plotting {metric.name}')
+#                 fig.show()
+#             except Exception as e:
+#                 print(e)
+#                 pass
 
 evaluator = Evaluator(
     test_metrics=test_metrics,
@@ -69,7 +67,7 @@ evaluator = Evaluator(
     compute_on_cpu=False,
 )
 # Bind plotting function instead of original on_test_epoch_end
-setattr(evaluator, 'on_test_epoch_end', plotting_on_test_epoch_end.__get__(evaluator, evaluator.__class__))
+#setattr(evaluator, 'on_test_epoch_end', plotting_on_test_epoch_end.__get__(evaluator, evaluator.__class__))
 
 
 
@@ -82,9 +80,11 @@ checkpoint_callback = ModelCheckpoint(
 )
 
 engine = Engine(max_epochs=1,
+                max_steps=10,
                 callbacks=[checkpoint_callback],
                 logger=logger,
                 default_root_dir=OUTPUT_PATH,
+
 )
 
 
